@@ -1,17 +1,3 @@
-//1. Take input of playerSelection choice "Select rock, paper or scissors: " and use toLowerCase():-
-
-function playerChoice() {
-  selection = prompt("Select rock, paper or scissors: ").toLowerCase();
-  if ((selection != "rock") && (selection != "paper") && (selection != "scissors")) {
-    console.log("Wrong selection");
-    playerChoice();
-  }
-  console.log(selection);
-  return selection;
-}
-
-//2. getComputerChoice:-
-
 function getComputerChoice() {
   let choice = ["rock", "paper", "scissors"];
   let selectedChoice = choice[Math.floor(Math.random() * 3)];
@@ -19,16 +5,12 @@ function getComputerChoice() {
   return selectedChoice;
 }
 
-//3. Compare with ComputerSelection Value and play each round "playRound(playerSelection,  computerSelection)":-
-
 function playRound(playerSelection, computerSelection) {
   console.log(
     `PlayerSelection: ${playerSelection} while computerSelection: ${computerSelection}`
   );
   if (playerSelection === computerSelection) {
-    let pChoice = playerChoice();
-    let cChoice = getComputerChoice();
-    playRound(pChoice, cChoice);
+    return undefined;
   } else if (playerSelection === "rock" && computerSelection === "scissors") {
     return playerSelection;
   } else if (playerSelection === "rock" && computerSelection === "paper") {
@@ -44,31 +26,85 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-//5. Play 5 times "game()":-
+let pScore = 0;
+let cScore = 0;
 
-function game() {
-  let m = 0;
-  let n = 0;
+let selected = document.querySelector("#selectOptions");
+let result = document.querySelector("#result");
 
-  while ((m + n) < 5) {
-    let player = playerChoice();
-    let computerChoice = getComputerChoice();
-    // console.log(`player selected: ${player} while computer selected: ${computerChoice}`);
-    let round = playRound(player, computerChoice);
-    if (round === player) {
-      m++;
-    } else {
-      n++;
-    }
+selected.addEventListener("click", (event) => {
+  switch (event.target.id) {
+    case "rock":
+      let gameR = playRound("rock", getComputerChoice());
+      let gameShownR = document.createElement("p");
+      gameShownR.textContent =
+        gameR == "rock"
+          ? `You won with rock: ${++pScore}-${cScore}`
+          : gameR == undefined
+          ? `Replay`
+          : `You lost with rock: ${pScore}-${++cScore}`;
+      result.appendChild(gameShownR);
+      let finalScoreR = document.createElement("p");
+      if (pScore == 5) {
+        console.log(pScore);
+        finalScoreR.textContent = `You won the game!`;
+        pScore = 0;
+        cScore = 0;
+      } else if (cScore == 5) {
+        console.log(cScore);
+        finalScoreR.textContent = `You lost the game!`;
+        pScore = 0;
+        cScore = 0;
+      }
+      result.appendChild(finalScoreR);
+      break;
+    case "paper":
+      let game = playRound("paper", getComputerChoice());
+      let gameShown = document.createElement("p");
+      gameShown.textContent =
+        game == "paper"
+          ? `You won with paper: ${++pScore}-${cScore}`
+          : game == undefined
+          ? `Replay`
+          : `You lost with paper: ${pScore}-${++cScore}`;
+      result.appendChild(gameShown);
+      let finalScore = document.createElement("p");
+      if (pScore == 5) {
+        console.log(pScore);
+        finalScore.textContent = `You won the game!`;
+        pScore = 0;
+        cScore = 0;
+      } else if (cScore == 5) {
+        console.log(cScore);
+        finalScore.textContent = `You lost the game!`;
+        pScore = 0;
+        cScore = 0;
+      }
+      result.appendChild(finalScore);
+      break;
+    case "scissors":
+      let gameS = playRound("scissors", getComputerChoice());
+      let gameShownS = document.createElement("p");
+      gameShownS.textContent =
+        gameS == "scissors"
+          ? `You won with scissors: ${++pScore}-${cScore}`
+          : gameS == undefined
+          ? `Replay`
+          : `You lost with scissors: ${pScore}-${++cScore}`;
+      result.appendChild(gameShownS);
+      let finalScoreS = document.createElement("p");
+      if (pScore == 5) {
+        console.log(pScore);
+        finalScoreS.textContent = `You won the game!`;
+        pScore = 0;
+        cScore = 0;
+      } else if (cScore == 5) {
+        console.log(cScore);
+        finalScoreS.textContent = `You lost the game!`;
+        pScore = 0;
+        cScore = 0;
+      }
+      result.appendChild(finalScoreS);
+      break;
   }
-
-  if (m > n) {
-    alert("You Won!");
-  } else {
-    alert("You Lose!");
-  }
-}
-
-game();
-
-//6. Winner declared "You Lose! Paper beats Rock" or "You Won! Rock beats Scissors"
+});
